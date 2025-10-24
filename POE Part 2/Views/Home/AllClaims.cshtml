@@ -1,0 +1,64 @@
+﻿@model List<POE_Part_2.Models.Claim>
+@{
+    ViewData["Title"] = "All Claims"; // Sets the page title
+}
+
+<div class="container">
+    <!-- Main container -->
+    <h2 class="text-blue mb-4">All Claims</h2> <!-- Page heading -->
+
+    @if (TempData["Error"] != null) // Check for error messages
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div> <!-- Display error message -->
+    }
+    @if (TempData["Success"] != null) // Check for success messages
+    {
+        <div class="alert alert-success">@TempData["Success"]</div> <!-- Display success message -->
+    }
+
+    <div class="card">
+        <!-- All claims card -->
+        <div class="card-header">
+            <!-- Card header -->
+            <h5 class="mb-0">All System Claims</h5> <!-- Section title -->
+        </div>
+        <div class="card-body">
+            <!-- Card body -->
+            <div class="table-responsive">
+                <!-- Responsive table container -->
+                <table class="table table-hover">
+                    <!-- Claims table -->
+                    <thead>
+                        <!-- Table header -->
+                        <tr>
+                            <!-- Header row -->
+                            <th>Claim ID</th> <!-- ID column -->
+                            <th>Lecturer</th> <!-- Lecturer column -->
+                            <th>Period</th> <!-- Period column -->
+                            <th>Hours</th> <!-- Hours column -->
+                            <th>Amount</th> <!-- Amount column -->
+                            <th>Status</th> <!-- Status column -->
+                            <th>Submission Date</th> <!-- Date column -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Table body -->
+                        @foreach (var claim in Model) // Loop through claims
+                        {
+                            <tr>
+                                <!-- Claim row -->
+                                <td>@claim.ClaimId</td> <!-- Claim ID -->
+                                <td>@claim.LecturerName</td> <!-- Lecturer name -->
+                                <td>@System.Globalization.DateTimeFormatInfo.CurrentInfo.GetMonthName(claim.Month) @claim.Year</td> <!-- Claim period -->
+                                <td>@claim.HoursWorked</td> <!-- Hours worked -->
+                                <td>R @claim.TotalAmount.ToString("N2")</td> <!-- Claim amount -->
+                                <td><span class="status-badge status-@claim.Status.ToLower()">@claim.Status</span></td> <!-- Status badge -->
+                                <td>@claim.SubmissionDate.ToString("dd MMM yyyy")</td> <!-- Submission date -->
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

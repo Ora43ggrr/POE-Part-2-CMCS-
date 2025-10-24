@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Login"; // Sets the page title
+}
+
+<div class="login-container">
+    <!-- Login form container -->
+    <h2 class="text-center text-blue mb-4">Contract Monthly Claim System</h2> <!-- Application title -->
+    <h4 class="text-center mb-4">Login to Your Account</h4> <!-- Login heading -->
+
+    @if (ViewBag.Error != null) // Check for error messages
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div> <!-- Display error message -->
+    }
+
+    <form method="post" asp-action="Login"> <!-- Login form with post method -->
+        <div class="mb-3">
+            <!-- Form group for email -->
+            <label for="Email" class="form-label">Email Address</label> <!-- Email label -->
+            <input type="email" class="form-control" id="Email" name="email" placeholder="Enter your email" required> <!-- Email input -->
+        </div>
+
+        <div class="mb-3">
+            <!-- Form group for password -->
+            <label for="Password" class="form-label">Password</label> <!-- Password label -->
+            <input type="password" class="form-control" id="Password" name="password" placeholder="Enter your password" required> <!-- Password input -->
+        </div>
+
+        <div class="mb-3 form-check">
+            <!-- Form group for remember me checkbox -->
+            <input type="checkbox" class="form-check-input" id="rememberMe"> <!-- Checkbox input -->
+            <label class="form-check-label" for="rememberMe">Remember me</label> <!-- Checkbox label -->
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Login</button> <!-- Login button -->
+
+        <div class="text-center mt-3">
+            <!-- Forgot password section -->
+            <a href="#" class="text-blue">Forgot your password?</a> <!-- Forgot password link -->
+        </div>
+    </form>
+
+    <hr class="my-4"> <!-- Horizontal divider -->
+
+    <p class="text-center">
+        <!-- Registration prompt -->
+        Don't have an account?
+        <a href="@Url.Action("Register","Home")" class="text-blue fw-bold">Register now</a> <!-- Registration link -->
+    </p>
+</div>

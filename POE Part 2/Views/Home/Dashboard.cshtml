@@ -1,0 +1,155 @@
+﻿@{
+    ViewData["Title"] = "Dashboard"; // Sets the page title
+}
+
+<div class="container">
+    <!-- Main container -->
+    <h2 class="text-blue mb-4">Dashboard</h2> <!-- Dashboard heading -->
+
+    <div class="row mb-4">
+        <!-- Metrics row -->
+        <div class="col-md-3 mb-3">
+            <!-- Pending claims metric -->
+            <div class="card dashboard-widget">
+                <!-- Metric card -->
+                <div class="card-body text-center">
+                    <!-- Card body -->
+                    <h5 class="card-title">Pending Claims</h5> <!-- Metric title -->
+                    <h2 class="text-blue">@(ViewBag.PendingClaims ?? 0)</h2> <!-- Metric value -->
+                    <p class="card-text">Awaiting review</p> <!-- Metric description -->
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <!-- Approved claims metric -->
+            <div class="card dashboard-widget">
+                <!-- Metric card -->
+                <div class="card-body text-center">
+                    <!-- Card body -->
+                    <h5 class="card-title">Approved Claims</h5> <!-- Metric title -->
+                    <h2 class="text-blue">@(ViewBag.ApprovedClaims ?? 0)</h2> <!-- Metric value -->
+                    <p class="card-text">This year</p> <!-- Metric description -->
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <!-- Total amount metric -->
+            <div class="card dashboard-widget">
+                <!-- Metric card -->
+                <div class="card-body text-center">
+                    <!-- Card body -->
+                    <h5 class="card-title">Total Amount</h5> <!-- Metric title -->
+                    <h2 class="text-blue">R @((ViewBag.TotalAmount ?? 0).ToString("N2"))</h2> <!-- Metric value -->
+                    <p class="card-text">Year to date</p> <!-- Metric description -->
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <!-- Documents metric -->
+            <div class="card dashboard-widget">
+                <!-- Metric card -->
+                <div class="card-body text-center">
+                    <!-- Card body -->
+                    <h5 class="card-title">Documents</h5> <!-- Metric title -->
+                    <h2 class="text-blue">@(ViewBag.DocumentCount ?? 0)</h2> <!-- Metric value -->
+                    <p class="card-text">Uploaded files</p> <!-- Metric description -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Content row -->
+        <div class="col-md-8 mb-4">
+            <!-- Recent claims section -->
+            <div class="card">
+                <!-- Claims card -->
+                <div class="card-header">
+                    <!-- Card header -->
+                    <h5 class="mb-0">Recent Claims</h5> <!-- Section title -->
+                </div>
+                <div class="card-body">
+                    <!-- Card body -->
+                    @{
+                        var userClaims = ViewBag.UserClaims as List<POE_Part_2.Models.Claim> ?? new List<POE_Part_2.Models.Claim>();
+                        var recentClaims = userClaims.OrderByDescending(c => c.SubmissionDate).Take(3).ToList();
+                    }
+                    
+                    @foreach (var claim in recentClaims)
+                    {
+                        <div class="claim-card p-3 mb-3">
+                            <!-- Claim item -->
+                            <div class="d-flex justify-content-between">
+                                <!-- Claim header -->
+                                <h6>@System.Globalization.DateTimeFormatInfo.CurrentInfo.GetMonthName(claim.Month) @claim.Year Claim</h6> <!-- Claim title -->
+                                <span class="status-badge status-@claim.Status.ToLower()">@claim.Status</span> <!-- Status badge -->
+                            </div>
+                            <p class="mb-1">Hours: @claim.HoursWorked | Amount: R @claim.TotalAmount.ToString("N2")</p> <!-- Claim details -->
+                            <small class="text-muted">Submitted: @claim.SubmissionDate.ToString("dd MMM yyyy")</small> <!-- Submission date -->
+                        </div>
+                    }
+                    
+                    @if (!recentClaims.Any())
+                    {
+                        <p class="text-center text-muted">No claims submitted yet</p> <!-- Empty state -->
+                    }
+
+                    <div class="text-center mt-3">
+                        <!-- View all claims link -->
+                        <a href="@Url.Action("Claims","Home")" class="btn btn-outline-primary">View All Claims</a> <!-- View all button -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <!-- Sidebar section -->
+            <div class="card">
+                <!-- Quick actions card -->
+                <div class="card-header">
+                    <!-- Card header -->
+                    <h5 class="mb-0">Quick Actions</h5> <!-- Section title -->
+                </div>
+                <div class="card-body">
+                    <!-- Card body -->
+                    <div class="d-grid gap-2">
+                        <!-- Button group -->
+                        <a href="@Url.Action("SubmitClaim","Home")" class="btn btn-primary">Submit New Claim</a> <!-- Submit claim button -->
+                        <a href="@Url.Action("Documents","Home")" class="btn btn-outline-primary">Upload Documents</a> <!-- Upload documents button -->
+                        <a href="@Url.Action("Claims","Home")" class="btn btn-outline-primary">Check Status</a> <!-- Check status button -->
+                        <a href="#" class="btn btn-outline-primary">Update Profile</a> <!-- Update profile button -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <!-- Notifications card -->
+                <div class="card-header">
+                    <!-- Card header -->
+                    <h5 class="mb-0">Notifications</h5> <!-- Section title -->
+                </div>
+                <div class="card-body">
+                    <!-- Card body -->
+                    <div class="alert alert-info p-2 mb-2">
+                        <!-- Info notification -->
+                        <small>Your August claim has been approved.</small> <!-- Notification text -->
+                    </div>
+                    <div class="alert alert-warning p-2 mb-2">
+                        <!-- Warning notification -->
+                        <small>Please upload supporting documents for September claim.</small> <!-- Notification text -->
+                    </div>
+                    <div class="alert alert-success p-2">
+                        <!-- Success notification -->
+                        <small>System maintenance scheduled for Sunday.</small> <!-- Notification text -->
+                    </div>
+                    <div class="text-center mt-2">
+                        <a href="@Url.Action("Notifications","Home")" class="btn btn-sm btn-outline-primary">View All Notifications</a> <!-- View all notifications button -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

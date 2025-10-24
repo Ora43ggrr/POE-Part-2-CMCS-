@@ -1,0 +1,86 @@
+﻿@model List<POE_Part_2.Models.Claim>
+@{
+    ViewData["Title"] = "Review Claims"; // Sets the page title
+}
+
+<div class="container">
+    <!-- Main container -->
+    <h2 class="text-blue mb-4">Review Claims</h2> <!-- Page heading -->
+
+    @if (TempData["Error"] != null) // Check for error messages
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div> <!-- Display error message -->
+    }
+    @if (TempData["Success"] != null) // Check for success messages
+    {
+        <div class="alert alert-success">@TempData["Success"]</div> <!-- Display success message -->
+    }
+
+    <div class="card">
+        <!-- Review claims card -->
+        <div class="card-header">
+            <!-- Card header -->
+            <h5 class="mb-0">Claims for Approval</h5> <!-- Section title -->
+        </div>
+        <div class="card-body">
+            <!-- Card body -->
+            <div class="table-responsive">
+                <!-- Responsive table container -->
+                <table class="table table-hover">
+                    <!-- Claims table -->
+                    <thead>
+                        <!-- Table header -->
+                        <tr>
+                            <!-- Header row -->
+                            <th>Claim ID</th> <!-- ID column -->
+                            <th>Lecturer</th> <!-- Lecturer column -->
+                            <th>Period</th> <!-- Period column -->
+                            <th>Hours</th> <!-- Hours column -->
+                            <th>Amount</th> <!-- Amount column -->
+                            <th>Status</th> <!-- Status column -->
+                            <th>Submission Date</th> <!-- Date column -->
+                            <th>Actions</th> <!-- Actions column -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Table body -->
+                        @foreach (var claim in Model) // Loop through claims
+                        {
+                            <tr>
+                                <!-- Claim row -->
+                                <td>@claim.ClaimId</td> <!-- Claim ID -->
+                                <td>@claim.LecturerName</td> <!-- Lecturer name -->
+                                <td>@System.Globalization.DateTimeFormatInfo.CurrentInfo.GetMonthName(claim.Month) @claim.Year</td> <!-- Claim period -->
+                                <td>@claim.HoursWorked</td> <!-- Hours worked -->
+                                <td>R @claim.TotalAmount.ToString("N2")</td> <!-- Claim amount -->
+                                <td><span class="status-badge status-@claim.Status.ToLower()">@claim.Status</span></td> <!-- Status badge -->
+                                <td>@claim.SubmissionDate.ToString("dd MMM yyyy")</td> <!-- Submission date -->
+                                <td>
+                                    <!-- Actions cell -->
+                                    <div class="btn-group" role="group">
+                                        <form method="post" asp-action="UpdateClaimStatus" class="d-inline"> <!-- Status update form -->
+                                            <input type="hidden" name="claimId" value="@claim.Id" /> <!-- Hidden claim ID -->
+                                            <button type="submit" name="status" value="Approved" class="btn btn-sm btn-success me-1">Approve</button> <!-- Approve button -->
+                                            <button type="submit" name="status" value="Rejected" class="btn btn-sm btn-danger">Reject</button> <!-- Reject button -->
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                        @if (!Model.Any()) // Check if no claims
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center">No pending claims for review</td> <!-- Empty state message -->
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <!-- Additional actions -->
+        <a href="@Url.Action("AllClaims","Home")" class="btn btn-outline-primary">View All Claims</a> <!-- View all claims button -->
+    </div>
+</div>

@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Register"; // Sets the page title
+}
+
+<div class="register-container">
+    <!-- Registration form container -->
+    <h2 class="text-center text-blue mb-4">Create an Account</h2> <!-- Registration heading -->
+
+    <form method="post" asp-action="Register">
+        <!-- Registration form with post method -->
+        <div class="mb-3">
+            <!-- Form group for username -->
+            <label for="username" class="form-label">Full Name</label> <!-- Name label -->
+            <input type="text" class="form-control" id="username" name="username" placeholder="Enter your full name" required> <!-- Name input -->
+        </div>
+
+        <div class="mb-3">
+            <!-- Form group for role selection -->
+            <label for="userRole" class="form-label">Role</label> <!-- Role label -->
+            <select class="form-select" id="userRole" name="userRole" required>
+                <!-- Role dropdown -->
+                <option value="">Select your role</option> <!-- Default option -->
+                <option value="Lecturer">Lecturer</option> <!-- Lecturer option -->
+                <option value="ProgrammeCoordinator">Programme Coordinator</option> <!-- Coordinator option -->
+                <option value="AcademicManager">Academic Manager</option> <!-- Manager option -->
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <!-- Form group for email -->
+            <label for="Email" class="form-label">Email Address</label> <!-- Email label -->
+            <input type="email" class="form-control" id="Email" name="email" placeholder="Enter your email address" required> <!-- Email input -->
+        </div>
+
+        <div class="mb-3">
+            <!-- Form group for password -->
+            <label for="Password" class="form-label">Password</label> <!-- Password label -->
+            <input type="password" class="form-control" id="Password" name="password" placeholder="Create a password" required> <!-- Password input -->
+        </div>
+
+        <div class="mb-3">
+            <!-- Form group for password confirmation -->
+            <label for="confirmPassword" class="form-label">Confirm Password</label> <!-- Confirm password label -->
+            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required> <!-- Confirm password input -->
+        </div>
+
+        <div class="mb-3 form-check">
+            <!-- Form group for terms agreement -->
+            <input type="checkbox" class="form-check-input" id="termsAgree" required> <!-- Terms checkbox -->
+            <label class="form-check-label" for="termsAgree">I agree to the Terms and Conditions</label> <!-- Terms label -->
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Register</button> <!-- Register button -->
+
+        <hr class="my-4"> <!-- Horizontal divider -->
+
+        <p class="text-center">
+            <!-- Login prompt -->
+            Already have an account?
+            <a href="@Url.Action("Index", "Home")" class="text-blue fw-bold">Login here</a> <!-- Login link -->
+        </p>
+    </form>
+</div>
